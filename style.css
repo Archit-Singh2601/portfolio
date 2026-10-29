@@ -1,0 +1,1696 @@
+/* ==========================================================================
+   ANTI-GRAVITY PORTFOLIO — ARCHIT SINGH
+   Theme: Ink-Wash Sumi-e fused with Cybernetic Zero-G Physics
+   Palette: Ink Black (#090a0f), Crimson Seal Red (#e63946), Neon Green (#00ff88)
+   ========================================================================== */
+
+:root {
+  /* Color System */
+  --bg-deep: #090a0f;
+  --bg-surface: rgba(15, 18, 28, 0.72);
+  --bg-surface-elevated: rgba(22, 27, 42, 0.82);
+  --bg-card-border: rgba(255, 255, 255, 0.08);
+  --bg-card-border-hover: rgba(0, 255, 136, 0.35);
+  --bg-wash-gradient: radial-gradient(circle at 50% 20%, rgba(26, 32, 53, 0.4) 0%, rgba(9, 10, 15, 0.95) 75%);
+
+  /* Accents */
+  --crimson-seal: #e63946;
+  --crimson-seal-glow: rgba(230, 57, 70, 0.35);
+  --crimson-seal-soft: rgba(230, 57, 70, 0.12);
+  --neon-green: #00ff88;
+  --neon-green-bright: #39ff14;
+  --neon-green-glow: rgba(0, 255, 136, 0.35);
+  --neon-green-soft: rgba(0, 255, 136, 0.1);
+  --cyber-cyan: #00d2ff;
+  --amber-warm: #ffb703;
+
+  /* Text & Foreground */
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --text-dim: #64748b;
+  --text-code: #00ff88;
+
+  /* Fonts */
+  --font-display: 'Syne', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Space Mono', Consolas, monospace;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+
+  /* Dimensions & Spacing */
+  --nav-height: 72px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   CSS Reset & Base
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg-deep);
+  position: relative;
+  overflow-x: hidden;
+  user-select: text;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #090a0f;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-green);
+}
+
+/* Subtle Film Grain Overlay */
+.film-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Background Physics & Ink Canvas */
+#ink-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Cybernetic Scanlines */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.25;
+}
+
+/* ==========================================================================
+   Navigation Bar
+   ========================================================================== */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  background: rgba(9, 10, 15, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--bg-card-border);
+  transition: all var(--transition-normal);
+}
+
+.site-nav.scrolled {
+  background: rgba(9, 10, 15, 0.92);
+  border-bottom-color: rgba(0, 255, 136, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+}
+
+.hanko-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: var(--crimson-seal);
+  color: #fff;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 0 15px var(--crimson-seal-glow), inset 0 0 6px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0;
+  position: relative;
+  transition: transform var(--transition-fast);
+}
+
+.brand-wrap:hover .hanko-seal {
+  transform: rotate(6deg) scale(1.05);
+}
+
+.brand-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.brand-title {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+}
+
+/* Nav Menu Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  list-style: none;
+}
+
+.nav-item a {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: color var(--transition-fast), text-shadow var(--transition-fast);
+  position: relative;
+  padding: 0.4rem 0;
+}
+
+.nav-item a:hover {
+  color: #fff;
+  text-shadow: 0 0 12px var(--neon-green-glow);
+}
+
+.nav-item a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--neon-green);
+  box-shadow: 0 0 8px var(--neon-green);
+  transition: width var(--transition-fast);
+}
+
+.nav-item a:hover::after {
+  width: 100%;
+}
+
+/* Nav Telemetry Status */
+.nav-telemetry {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--bg-card-border);
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.pulse-beacon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--neon-green);
+  position: relative;
+  box-shadow: 0 0 10px var(--neon-green);
+}
+
+.pulse-beacon::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--neon-green);
+  animation: beacon-ripple 2s infinite ease-out;
+}
+
+@keyframes beacon-ripple {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Mobile Nav Toggle */
+.mobile-nav-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+/* ==========================================================================
+   Floating Gravity Switch Widget
+   ========================================================================== */
+.gravity-switch-widget {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(14, 18, 28, 0.88);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 0.6rem 1.15rem;
+  border-radius: var(--radius-full);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 255, 136, 0.2);
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--transition-normal);
+}
+
+.gravity-switch-widget:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: var(--neon-green);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 255, 136, 0.35);
+}
+
+.gravity-switch-btn {
+  position: relative;
+  width: 50px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 2px;
+  transition: background var(--transition-normal);
+}
+
+.gravity-switch-thumb {
+  width: 22px;
+  height: 22px;
+  background: var(--neon-green);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--neon-green);
+  transition: transform var(--transition-smooth), background var(--transition-normal);
+}
+
+/* In Zero-G mode (default active) */
+body.zero-g-active .gravity-switch-thumb {
+  transform: translateX(0);
+  background: var(--neon-green);
+  box-shadow: 0 0 12px var(--neon-green);
+}
+
+/* In Grid Dock mode */
+body.grid-dock-active .gravity-switch-thumb {
+  transform: translateX(24px);
+  background: var(--crimson-seal);
+  box-shadow: 0 0 12px var(--crimson-seal);
+}
+
+body.grid-dock-active .gravity-switch-widget {
+  border-color: rgba(230, 57, 70, 0.4);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(230, 57, 70, 0.25);
+}
+
+.switch-label-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.switch-status-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fff;
+}
+
+.switch-sub-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+/* Floating helper pill */
+.floating-physics-badge {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 45;
+  background: rgba(14, 18, 28, 0.75);
+  border: 1px solid var(--bg-card-border);
+  backdrop-filter: blur(12px);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  pointer-events: auto;
+  transition: opacity 0.4s;
+}
+
+.floating-physics-badge kbd {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  color: var(--neon-green);
+  font-size: 0.65rem;
+}
+
+/* ==========================================================================
+   Main Layout & Mode Containers
+   ========================================================================== */
+.main-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  min-height: 100vh;
+  padding-top: calc(var(--nav-height) + 2rem);
+  padding-bottom: 8rem;
+}
+
+/* Stage Container */
+.bento-container {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  position: relative;
+  transition: all var(--transition-smooth);
+}
+
+/* GRID DOCK MODE: Structured Bento Grid */
+body.grid-dock-active .bento-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+/* In Zero-G mode: Elements are unpinned and positioned absolutely by physics.js */
+body.zero-g-active .bento-container {
+  position: relative;
+  min-height: 1200px;
+}
+
+/* Matter Card Base Styling */
+.matter-card {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 2rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal), transform 0.1s ease-out;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.matter-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(0, 255, 136, 0.05), transparent 70%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.matter-card:hover {
+  border-color: var(--bg-card-border-hover);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 255, 136, 0.15);
+}
+
+/* Zero-G Mode Card State */
+body.zero-g-active .matter-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: min(92vw, 480px);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+body.zero-g-active #card-hero {
+  width: min(92vw, 760px);
+}
+
+body.zero-g-active #card-unclutter {
+  width: min(92vw, 700px);
+}
+
+body.zero-g-active #card-arsenal {
+  width: min(92vw, 460px);
+}
+
+body.zero-g-active #card-dual-nature {
+  width: min(92vw, 580px);
+}
+
+body.zero-g-active #card-values {
+  width: min(92vw, 580px);
+}
+
+body.zero-g-active #card-trajectory {
+  width: min(92vw, 520px);
+}
+
+body.zero-g-active #card-contact {
+  width: min(92vw, 660px);
+}
+
+body.grid-dock-active .matter-card {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: auto;
+  cursor: default;
+}
+
+body.zero-g-active .matter-card:active {
+  cursor: grabbing;
+}
+
+/* Drag Handle / Physics Telemetry Header */
+.card-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--neon-green);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-tag::before {
+  content: '✦';
+  font-size: 0.6rem;
+  color: var(--neon-green);
+}
+
+.card-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.card-dot.active {
+  background: var(--crimson-seal);
+  box-shadow: 0 0 8px var(--crimson-seal);
+}
+
+/* ==========================================================================
+   BENTO GRID SPANNING (Grid Dock Mode)
+   ========================================================================== */
+body.grid-dock-active #card-hero {
+  grid-column: span 12;
+}
+
+body.grid-dock-active #card-unclutter {
+  grid-column: span 8;
+}
+
+body.grid-dock-active #card-arsenal {
+  grid-column: span 4;
+}
+
+body.grid-dock-active #card-dual-nature {
+  grid-column: span 6;
+}
+
+body.grid-dock-active #card-values {
+  grid-column: span 6;
+}
+
+body.grid-dock-active #card-trajectory {
+  grid-column: span 5;
+}
+
+body.grid-dock-active #card-contact {
+  grid-column: span 7;
+}
+
+/* Responsive Grid Spans */
+@media (max-width: 1080px) {
+  body.grid-dock-active #card-hero { grid-column: span 12; }
+  body.grid-dock-active #card-unclutter { grid-column: span 12; }
+  body.grid-dock-active #card-arsenal { grid-column: span 12; }
+  body.grid-dock-active #card-dual-nature { grid-column: span 12; }
+  body.grid-dock-active #card-values { grid-column: span 12; }
+  body.grid-dock-active #card-trajectory { grid-column: span 12; }
+  body.grid-dock-active #card-contact { grid-column: span 12; }
+}
+
+/* ==========================================================================
+   CARD 1: Hero / Identity Panel
+   ========================================================================== */
+.hero-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.hero-meta-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--neon-green-soft);
+  border: 1px solid rgba(0, 255, 136, 0.25);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--neon-green);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.coord-stamp {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 5.8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.25rem;
+  background: linear-gradient(180deg, #ffffff 30%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-name .accent-dot {
+  color: var(--crimson-seal);
+  -webkit-text-fill-color: var(--crimson-seal);
+  display: inline-block;
+  text-shadow: 0 0 20px var(--crimson-seal);
+}
+
+.hero-bio {
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 48ch;
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+.hero-bio strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Floating Stats Pills */
+.stats-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-bottom: 2rem;
+}
+
+.stat-chip {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-fast);
+}
+
+.stat-chip:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--neon-green);
+  transform: translateY(-2px);
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.stat-num span {
+  color: var(--neon-green);
+}
+
+.stat-desc {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Hero CTA Action Group */
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: var(--neon-green);
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.85rem 1.65rem;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 25px var(--neon-green-glow);
+  transition: all var(--transition-fast);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 35px var(--neon-green);
+  background: var(--neon-green-bright);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  border: 1px solid var(--bg-card-border);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Big Sumi-e Artistic Seal Artifact on Hero */
+.hero-seal-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 190px;
+  height: 230px;
+  background: radial-gradient(circle at 50% 50%, rgba(230, 57, 70, 0.12), transparent 70%);
+  border: 1px solid rgba(230, 57, 70, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.seal-kanji-wrap {
+  width: 90px;
+  height: 90px;
+  border: 2px solid var(--crimson-seal);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px var(--crimson-seal-glow), inset 0 0 15px var(--crimson-seal-soft);
+  margin-bottom: 1rem;
+}
+
+.seal-kanji {
+  font-size: 2.8rem;
+  color: var(--crimson-seal);
+  font-weight: 900;
+  font-family: var(--font-serif);
+}
+
+.seal-caption {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #fff;
+}
+
+.seal-subtext {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 860px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+  }
+  .hero-seal-badge {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   CARD 2: "Unclutter" Innovation Hub (Interactive AI Pipeline)
+   ========================================================================== */
+.card-title-lg {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+
+.card-subtitle {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+/* Unclutter Interactive Showcase */
+.unclutter-sim-box {
+  background: rgba(9, 11, 17, 0.85);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sim-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 0.75rem;
+}
+
+.sim-title {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--neon-green);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sim-badge {
+  background: rgba(0, 255, 136, 0.12);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+}
+
+/* Pipeline Stage Stepper */
+.pipeline-stepper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.pipeline-step {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.85rem;
+  position: relative;
+  transition: all var(--transition-normal);
+}
+
+.pipeline-step.active {
+  background: rgba(0, 255, 136, 0.08);
+  border-color: var(--neon-green);
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.15);
+}
+
+.pipeline-step.completed {
+  border-color: rgba(0, 255, 136, 0.4);
+}
+
+.step-num {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.pipeline-step.active .step-num {
+  color: var(--neon-green);
+}
+
+.step-name {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Sample Input Selector */
+.input-presets {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.preset-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.preset-btn:hover, .preset-btn.active {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: var(--neon-green);
+  color: #fff;
+}
+
+/* Split Simulator: Input vs Output */
+.sim-workbench {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.work-panel {
+  background: rgba(14, 17, 26, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.work-panel-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.65rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sim-input-box {
+  width: 100%;
+  height: 110px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  resize: none;
+}
+
+/* Output JSON / Invoice Card */
+.sim-output-box {
+  height: 110px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--neon-green);
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+/* Trigger Button */
+.sim-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 1rem;
+}
+
+.sim-stats {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.sim-stats span {
+  color: var(--neon-green);
+}
+
+@media (max-width: 768px) {
+  .pipeline-stepper {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sim-workbench {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   CARD 3: Technical Arsenal (Physics Pills)
+   ========================================================================== */
+.arsenal-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.arsenal-pill-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.tech-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-main);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  user-select: none;
+}
+
+.tech-pill:hover {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: var(--neon-green);
+  color: #fff;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+}
+
+.tech-pill.primary {
+  border-color: rgba(0, 255, 136, 0.35);
+  background: rgba(0, 255, 136, 0.05);
+}
+
+.tech-pill.primary::before {
+  content: '●';
+  color: var(--neon-green);
+  font-size: 0.5rem;
+}
+
+.tech-pill.crimson {
+  border-color: rgba(230, 57, 70, 0.35);
+  background: rgba(230, 57, 70, 0.05);
+}
+
+.tech-pill.crimson::before {
+  content: '●';
+  color: var(--crimson-seal);
+  font-size: 0.5rem;
+}
+
+/* Category grouping view for Arsenal */
+.arsenal-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 1rem;
+}
+
+.cat-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.cat-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+
+.cat-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* ==========================================================================
+   CARD 4: Dual-Nature Canvas (Tech × Art: Poetry & Photography)
+   ========================================================================== */
+.dual-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Poetry Side */
+.poetry-module {
+  background: rgba(22, 17, 24, 0.6);
+  border: 1px solid rgba(230, 57, 70, 0.2);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.poetry-module::before {
+  content: 'शायरी';
+  position: absolute;
+  top: -15px;
+  right: -10px;
+  font-size: 5rem;
+  font-family: var(--font-serif);
+  color: rgba(230, 57, 70, 0.06);
+  pointer-events: none;
+}
+
+.poetry-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.poetry-tab-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.poetry-tab-btn.active {
+  border-color: var(--crimson-seal);
+  background: var(--crimson-seal-soft);
+  color: #fff;
+}
+
+.poem-box {
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.poem-hindi {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: #fff;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 0 15px rgba(230, 57, 70, 0.2);
+}
+
+.poem-roman {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-bottom: 0.4rem;
+}
+
+.poem-translation {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--neon-green);
+  opacity: 0.9;
+}
+
+/* Photography Side */
+.photo-module {
+  background: rgba(14, 18, 28, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.photo-frame {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+  background: #000;
+}
+
+.photo-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-smooth);
+}
+
+.photo-frame:hover .photo-preview {
+  transform: scale(1.06);
+}
+
+.photo-telemetry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+}
+
+.photo-title {
+  color: #fff;
+  font-weight: 600;
+}
+
+.photo-specs {
+  color: var(--neon-green);
+}
+
+@media (max-width: 768px) {
+  .dual-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   CARD 5: Values & Growth Matrix
+   ========================================================================== */
+.values-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.value-item {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  transition: all var(--transition-normal);
+}
+
+.value-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 255, 136, 0.3);
+  transform: translateY(-2px);
+}
+
+.value-icon {
+  font-size: 1.25rem;
+  margin-bottom: 0.6rem;
+}
+
+.value-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+
+.value-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.value-highlight {
+  color: var(--crimson-seal);
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   CARD 6: Career Trajectory (Milestone Timeline)
+   ========================================================================== */
+.trajectory-timeline {
+  position: relative;
+  padding-left: 1.75rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.trajectory-timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--neon-green), rgba(0, 255, 136, 0.3) 60%, rgba(230, 57, 70, 0.5));
+}
+
+.milestone-node {
+  position: relative;
+}
+
+.milestone-dot {
+  position: absolute;
+  left: -1.75rem;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--bg-deep);
+  border: 2px solid var(--neon-green);
+  box-shadow: 0 0 10px var(--neon-green);
+}
+
+.milestone-node.future .milestone-dot {
+  border-color: var(--crimson-seal);
+  box-shadow: 0 0 10px var(--crimson-seal);
+}
+
+.milestone-year {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--neon-green);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.2rem;
+}
+
+.milestone-node.future .milestone-year {
+  color: var(--crimson-seal);
+}
+
+.milestone-role {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.milestone-role span {
+  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+.milestone-summary {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   CARD 7: Contact Dock (Cyber-Terminal)
+   ========================================================================== */
+.terminal-window {
+  background: #08090d;
+  border: 1px solid rgba(0, 255, 136, 0.25);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 255, 136, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-titlebar {
+  background: #0e111a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.terminal-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.term-btn {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.term-btn.red { background: #ff5f56; }
+.term-btn.yellow { background: #ffbd2e; }
+.term-btn.green { background: #27c93f; }
+
+.terminal-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+.terminal-screen {
+  padding: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #fff;
+  line-height: 1.6;
+  min-height: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.term-line {
+  margin-bottom: 0.4rem;
+}
+
+.term-prompt {
+  color: var(--neon-green);
+  font-weight: 700;
+}
+
+.term-output {
+  color: var(--text-muted);
+  padding-left: 0.75rem;
+}
+
+.terminal-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #0b0d14;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.75rem 1rem;
+}
+
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.term-cmd-shortcuts {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.85rem;
+}
+
+.cmd-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.3rem 0.65rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--neon-green);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.cmd-pill:hover {
+  background: rgba(0, 255, 136, 0.12);
+  border-color: var(--neon-green);
+}
+
+/* Contact Social Dock Links */
+.contact-links-dock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  padding: 0.5rem 1rem;
+  color: var(--text-main);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  transition: all var(--transition-fast);
+}
+
+.social-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--neon-green);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.site-footer {
+  border-top: 1px solid var(--bg-card-border);
+  padding: 3rem 2rem;
+  margin-top: 4rem;
+  position: relative;
+  z-index: 20;
+}
+
+.footer-content {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-big-name {
+  width: 100%;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 12vw, 10rem);
+  font-weight: 900;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
+  margin-top: 2rem;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Invoice Modal / Inspector (For Unclutter Pipeline)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal);
+  padding: 1rem;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: #0e111a;
+  border: 1px solid rgba(0, 255, 136, 0.4);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 580px;
+  padding: 2rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 255, 136, 0.2);
+  transform: translateY(20px) scale(0.97);
+  transition: transform var(--transition-smooth);
+}
+
+.modal-overlay.open .modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 1rem;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.invoice-preview-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #fff;
+}
+
+.invoice-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.invoice-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.75rem 0;
+}
+
+.invoice-total {
+  font-weight: 700;
+  color: var(--neon-green);
+  font-size: 0.95rem;
+}
